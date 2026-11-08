@@ -1,0 +1,41 @@
+# Ce dépôt ne contient que du code. Aucune donnée ne doit y être ajoutée.
+
+# Données et sorties
+*.xlsx
+*.xls
+*.csv
+*.tsv
+*.json
+*.txt
+!requirements.txt
+*.mat
+*.set
+*.fdt
+*.bdf
+*.edf
+*.daterp
+*.datspec
+*.dattimef
+*.icaerp
+*.study
+*.gpkg
+*.shp
+*.tif
+*.zip
+*.html
+*.png
+*.jpg
+*.pdf
+*.docx
+*.m4a
+*.mp4
+
+# Environnements et caches
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+*.asv
+*.bak*
+.vscode/
+.idea/

@@ -1,0 +1,9 @@
+# Versions de l'environnement Python avec lequel les scripts ont été vérifiés (Python 3.12.2).
+numpy==1.26.4
+pandas==2.2.1
+scipy==1.14.1
+statsmodels==0.14.4
+patsy==1.0.1
+openpyxl==3.1.2
+# Uniquement pour la fusion des capteurs (cartes des trajets, 03_trajets_bruit/fusion_capteurs_*)
+folium==0.17.0
