@@ -1,0 +1,647 @@
+---
+API: 3
+OpenSesame: 4.0.24
+Platform: nt
+---
+set width 1920
+set title "1-Back"
+set subject_parity even
+set subject_nr 0
+set start Expe
+set sound_sample_size -16
+set sound_freq 48000
+set sound_channels 2
+set sound_buf_size 1024
+set sampler_backend psycho
+set round_decimals 2
+set psychopy_screen 1
+set mouse_backend psycho
+set keyboard_backend psycho
+set height 1080
+set fullscreen no
+set form_clicks no
+set foreground white
+set font_underline no
+set font_size 26
+set font_italic False
+set font_family mono
+set font_bold False
+set experiment_path "C:\\Users\\mahou\\Desktop"
+set disable_garbage_collection False
+set description "A template containing a practice and an experimental phase"
+set color_backend psycho
+set clock_backend psycho
+set canvas_backend psycho
+set background "#3d3846"
+
+define inline_script Exe
+	set description "Exécute du code Python"
+	set _run ""
+	___prepare__
+	var.valeur = testArray[count]
+	
+	if copieTable[count] == 1 : 
+	    correct_response = "num_0" 
+	
+	else : correct_response = None
+	__end__
+
+define sequence Expe
+	set flush_keyboard yes
+	set description "The main sequence of the experiment"
+	run test_mode True
+	run Id_participant "[test_mode] != \"y\""
+	run consigne_passation "[test_mode] != \"y\""
+	run consigne_fix "[test_mode] != \"y\""
+	run consigne_1 "[test_mode] != \"y\""
+	run consigne_2 "[test_mode] != \"y\""
+	run consigne_ex1 "[test_mode] != \"y\""
+	run fix_ex1 "[test_mode] != \"y\""
+	run consigne_ex2 "[test_mode] != \"y\""
+	run fix_ex2 "[test_mode] != \"y\""
+	run consigne_ex3 "[test_mode] != \"y\""
+	run fix_ex3 "[test_mode] != \"y\""
+	run consigne_ex4 "[test_mode] != \"y\""
+	run consigne_3 "[test_mode] != \"y\""
+	run consigne_4 "[test_mode] != \"y\""
+	run consigne_lancement "[test_mode] != \"y\""
+	run prepa_trigger True
+	run experimental_loop True
+	run trigger_stop True
+	run end_of_experiment "[test_mode] != \"y\""
+
+define form_text_input Id_participant
+	set timeout infinite
+	set spacing 10
+	set rows "1;1;6"
+	set only_render no
+	set margins "50;50;50;50"
+	set form_var ID
+	set form_title Identifiant
+	set form_question "Identifiant participant :"
+	set description "A simple text input form"
+	set cols 1
+	set _theme gray
+	widget 0 0 1 1 label text="{form_title}"
+	widget 0 1 1 1 label center=no text="{form_question}"
+	widget 0 2 1 1 text_input focus=yes return_accepts=yes stub="" var="{form_var}"
+
+
+define inline_script Init
+	set description "Exécute du code Python"
+	set _run ""
+	___prepare__
+	import random
+	
+	var.allowedLetters = ["B","C","D","E","F","G","H","I","J","L","M","N","P","R","S","T","U","V","W","Y","Z"]
+	
+	var.testLength = 70*2
+	testRate = 0.3
+	testCount = int(testLength*testRate)
+	fakeTests = testLength - testCount - 4
+	testArray = [0]*fakeTests + [1]*testCount
+	random.shuffle(testArray)
+	testArray = [0,0] + testArray + [0,0]
+	
+	var.copieTable = testArray[::-1].copy()
+	var.nBack = 1
+	__end__
+
+define inline_script Tableau
+	set description "Exécute du code Python"
+	set _run ""
+	___prepare__
+	import random
+	
+	def setRandomLetter(testArray, idx):
+	    letter = random.choice(allowedLetters)
+	    prevIndex = idx - var.nBack
+	    if prevIndex < 0:
+	        testArray[idx] = letter
+	        return
+	    prevLetter = testArray[prevIndex]
+	    while letter == prevLetter:
+	        letter = random.choice(allowedLetters)
+	    testArray[idx] = letter
+	
+	def putSubsequentLetter(testArray, idx, letter = None):
+	    if letter is None:
+	        allowedCopy = allowedLetters.copy()
+	#        if idx >= 1:
+	#            back1 = testArray[idx-1]
+	#            allowedCopy.remove(back1)
+	        if idx > 1 :
+	            back1 = testArray[idx-2]
+	            allowedCopy.remove(back1)
+	        letter = random.choice(allowedCopy)
+	    testArray[idx] = letter
+	    nextIndex = idx + var.nBack
+	    if nextIndex > len(testArray) -1:
+	        return
+	    nextValue = testArray[nextIndex]
+	    testArray[nextIndex] = letter
+	    if nextValue == 1:
+	        putSubsequentLetter(testArray, nextIndex, letter)
+	
+	for idx, val in enumerate(testArray):
+	    if val == 0:
+	        setRandomLetter(testArray, idx)
+	    elif val == 1:
+	        putSubsequentLetter(testArray, idx)
+	
+	testArray = testArray[::-1]
+	__end__
+
+define loop block_loop
+	set source_file ""
+	set source table
+	set skip 0
+	set repeat 1
+	set order sequential
+	set offset no
+	set item trial_sequence
+	set description "A single block of trials"
+	set cycles 140
+	set continuous no
+	set column_order ""
+	set break_if_on_first yes
+	set break_if False
+	setcycle 0 count 0
+	setcycle 1 count 1
+	setcycle 2 count 2
+	setcycle 3 count 3
+	setcycle 4 count 4
+	setcycle 5 count 5
+	setcycle 6 count 6
+	setcycle 7 count 7
+	setcycle 8 count 8
+	setcycle 9 count 9
+	setcycle 10 count 10
+	setcycle 11 count 11
+	setcycle 12 count 12
+	setcycle 13 count 13
+	setcycle 14 count 14
+	setcycle 15 count 15
+	setcycle 16 count 16
+	setcycle 17 count 17
+	setcycle 18 count 18
+	setcycle 19 count 19
+	setcycle 20 count 20
+	setcycle 21 count 21
+	setcycle 22 count 22
+	setcycle 23 count 23
+	setcycle 24 count 24
+	setcycle 25 count 25
+	setcycle 26 count 26
+	setcycle 27 count 27
+	setcycle 28 count 28
+	setcycle 29 count 29
+	setcycle 30 count 30
+	setcycle 31 count 31
+	setcycle 32 count 32
+	setcycle 33 count 33
+	setcycle 34 count 34
+	setcycle 35 count 35
+	setcycle 36 count 36
+	setcycle 37 count 37
+	setcycle 38 count 38
+	setcycle 39 count 39
+	setcycle 40 count 40
+	setcycle 41 count 41
+	setcycle 42 count 42
+	setcycle 43 count 43
+	setcycle 44 count 44
+	setcycle 45 count 45
+	setcycle 46 count 46
+	setcycle 47 count 47
+	setcycle 48 count 48
+	setcycle 49 count 49
+	setcycle 50 count 50
+	setcycle 51 count 51
+	setcycle 52 count 52
+	setcycle 53 count 53
+	setcycle 54 count 54
+	setcycle 55 count 55
+	setcycle 56 count 56
+	setcycle 57 count 57
+	setcycle 58 count 58
+	setcycle 59 count 59
+	setcycle 60 count 60
+	setcycle 61 count 61
+	setcycle 62 count 62
+	setcycle 63 count 63
+	setcycle 64 count 64
+	setcycle 65 count 65
+	setcycle 66 count 66
+	setcycle 67 count 67
+	setcycle 68 count 68
+	setcycle 69 count 69
+	setcycle 70 count 70
+	setcycle 71 count 71
+	setcycle 72 count 72
+	setcycle 73 count 73
+	setcycle 74 count 74
+	setcycle 75 count 75
+	setcycle 76 count 76
+	setcycle 77 count 77
+	setcycle 78 count 78
+	setcycle 79 count 79
+	setcycle 80 count 80
+	setcycle 81 count 81
+	setcycle 82 count 82
+	setcycle 83 count 83
+	setcycle 84 count 84
+	setcycle 85 count 85
+	setcycle 86 count 86
+	setcycle 87 count 87
+	setcycle 88 count 88
+	setcycle 89 count 89
+	setcycle 90 count 90
+	setcycle 91 count 91
+	setcycle 92 count 92
+	setcycle 93 count 93
+	setcycle 94 count 94
+	setcycle 95 count 95
+	setcycle 96 count 96
+	setcycle 97 count 97
+	setcycle 98 count 98
+	setcycle 99 count 99
+	setcycle 100 count 100
+	setcycle 101 count 101
+	setcycle 102 count 102
+	setcycle 103 count 103
+	setcycle 104 count 104
+	setcycle 105 count 105
+	setcycle 106 count 106
+	setcycle 107 count 107
+	setcycle 108 count 108
+	setcycle 109 count 109
+	setcycle 110 count 110
+	setcycle 111 count 111
+	setcycle 112 count 112
+	setcycle 113 count 113
+	setcycle 114 count 114
+	setcycle 115 count 115
+	setcycle 116 count 116
+	setcycle 117 count 117
+	setcycle 118 count 118
+	setcycle 119 count 119
+	setcycle 120 count 120
+	setcycle 121 count 121
+	setcycle 122 count 122
+	setcycle 123 count 123
+	setcycle 124 count 124
+	setcycle 125 count 125
+	setcycle 126 count 126
+	setcycle 127 count 127
+	setcycle 128 count 128
+	setcycle 129 count 129
+	setcycle 130 count 130
+	setcycle 131 count 131
+	setcycle 132 count 132
+	setcycle 133 count 133
+	setcycle 134 count 134
+	setcycle 135 count 135
+	setcycle 136 count 136
+	setcycle 137 count 137
+	setcycle 138 count 138
+	setcycle 139 count 139
+	run experimental_sequence
+
+define sequence block_sequence
+	set flush_keyboard yes
+	set description "A sequence containing a single block of trials followed by feedback to the participant"
+	run reset_feedback True
+	run Init True
+	run Tableau True
+	run block_loop True
+
+define sketchpad consigne_1
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad containing the instructions for the participant"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=26 html=yes show_if=True text="Entre chaque fixation, des lettres vous seront présentés  " x=20 y=-230 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=F x=0 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+
+define sketchpad consigne_2
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad containing the instructions for the participant"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=26 html=yes show_if=True text="Votre objectif est de mémoriser les quelques lettres <br />précédentes afin de repérer si la lettre qui vous est <br />actuellement présentée est identique à celle <br />présentée lors de l'essai précédent.<br /><br />Si tel est le cas, appuyer sur la touche 0" x=-12 y=-230 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Exemple en suivant" x=0 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+
+define sketchpad consigne_3
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad containing the instructions for the participant"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=26 html=yes show_if=True text="Dans l'exemple précedent, il fallait répondre via <br />un appui sur le 0 lors de la présentation de la troisième lettre." x=-12 y=-230 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=T x=96 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=F x=-32 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=B x=-96 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=F x=32 y=0 z_index=0
+	draw fixdot color=white show_if=True style=default x=32 y=64 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+
+define sketchpad consigne_4
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad containing the instructions for the participant"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=26 html=yes show_if=True text="Attention, des enchaînements peuvent se produire, comme dans l'exemple ci-dessous." x=-12 y=-230 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=F x=96 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=F x=-32 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=B x=-96 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=F x=32 y=0 z_index=0
+	draw fixdot color=white show_if=True style=default x=32 y=64 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+	draw fixdot color=white show_if=True style=default x=96 y=64 z_index=0
+
+define sketchpad consigne_ex1
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad containing the instructions for the participant"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=B x=0 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+
+define sketchpad consigne_ex2
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad containing the instructions for the participant"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=F x=0 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+
+define sketchpad consigne_ex3
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad containing the instructions for the participant"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=F x=0 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+
+define sketchpad consigne_ex4
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad containing the instructions for the participant"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text=T x=0 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+
+define sketchpad consigne_fix
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad containing the instructions for the participant"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=26 html=yes show_if=True text="Un point de fixation vous sera présenté au centre de l'écran comme ici.<br />Nous vous demandons de bien le fixer sans détourner le regard." x=0 y=-232 z_index=0
+	draw fixdot color=white show_if=True style=default x=0 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+
+define sketchpad consigne_lancement
+	set duration keypress
+	set description "Affiche les stimuli"
+	draw fixdot color=white show_if=True style=default x=0 y=0 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=26 html=yes show_if=True text="Vous êtes prêt ?" x=0 y=-160 z_index=0
+	draw textline center=1 color=white font_bold=no font_family=mono font_italic=no font_size=21 html=yes show_if=True text="" x=32 y=-224 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour lancer l'expérience." x=0 y=352 z_index=0
+
+define sketchpad consigne_passation
+	set duration keypress
+	set description "Affiche les stimuli"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=26 html=yes show_if=True text="Les consignes du test vont vous être présentées peu à peu, <br />prenez le temps de bien les lire.<br />Pour toute question, n'hésitez pas à les exposer à <br />l'expérimentateur avant le lancement de la tâche.<br /><br /><br /><br />Durant cette phase d'explication, vous pouvez passer à la <br />consigne suivante en appuyant sur une des touches <br />de votre pavé numérique." x=0 y=-64 z_index=0
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=30 html=yes show_if=True text="Appuyer sur une touche pour passer." x=0 y=352 z_index=0
+
+define sketchpad end_of_experiment
+	set start_response_interval no
+	set duration keypress
+	set description "A sketchpad notifying the participant that the experiment is finished"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=26 html=yes show_if=True text="Félicitation, vous avez terminé !<br /><br />Vous pouvez faire signe à l'expérimentateur <br />et appuyer sur n'importe quelle touche pour interrompre la tâche." x=0 y=0 z_index=0
+
+define loop experimental_loop
+	set source_file ""
+	set source table
+	set skip 0
+	set repeat 1
+	set order random
+	set offset no
+	set item block_sequence
+	set description "A loop containing one or more experimental blocks"
+	set cycles 1
+	set continuous no
+	set column_order practice
+	set break_if_on_first yes
+	set break_if False
+	setcycle 0 practice no
+	run block_sequence
+
+define sequence experimental_sequence
+	set flush_keyboard yes
+	set description "A single trial"
+	run Exe True
+	run fixation_1 True
+	run trigger True
+	run presentation True
+	run keyboard_response True
+	run trigger_rep True
+	run fixation_fin True
+	run logger True
+
+define sketchpad fix_ex1
+	set start_response_interval no
+	set duration 700
+	set description "A sketchpad containing the instructions for the participant"
+	draw fixdot color=white show_if=True style=default x=0 y=0 z_index=0
+
+define sketchpad fix_ex2
+	set start_response_interval no
+	set duration 700
+	set description "A sketchpad containing the instructions for the participant"
+	draw fixdot color=white show_if=True style=default x=0 y=0 z_index=0
+
+define sketchpad fix_ex3
+	set start_response_interval no
+	set duration 700
+	set description "A sketchpad containing the instructions for the participant"
+	draw fixdot color=white show_if=True style=default x=0 y=0 z_index=0
+
+define sketchpad fixation_1
+	set start_response_interval no
+	set duration 1000
+	set description "A sketchpad containing the instructions for the participant"
+	draw fixdot color=white show_if=True style=default x=0 y=0 z_index=0
+
+define sketchpad fixation_fin
+	set start_response_interval no
+	set duration 0
+	set description "Displays stimuli"
+	draw fixdot color="#ffffff" show_if=True style=default x=0 y=0 z_index=0
+
+define keyboard_response keyboard_response
+	set timeout 1500
+	set flush yes
+	set event_type keypress
+	set duration keypress
+	set description "Collects keyboard responses"
+	set allowed_responses num_0
+
+define logger logger
+	set description "Logs experimental data"
+	set auto_log yes
+	exclude "*_backend"
+	exclude PERSISTENT
+	exclude TEMPORARY
+	exclude accuracy
+	exclude average_response_time
+	exclude avg_rt
+	exclude background
+	exclude closed
+	exclude "count_*"
+	exclude credentialless
+	exclude crossOriginIsolated
+	exclude datetime
+	exclude description
+	exclude devicePixelRatio
+	exclude disable_garbage_collection
+	exclude experiment_file
+	exclude experiment_path
+	exclude "font_*"
+	exclude foreground
+	exclude form_clicks
+	exclude fullscreen
+	exclude height
+	exclude innerHeight
+	exclude innerWidth
+	exclude isSecureContext
+	exclude length
+	exclude logfile
+	exclude opensesame_codename
+	exclude origin
+	exclude originAgentCluster
+	exclude outerHeight
+	exclude outerWidth
+	exclude "page?Offset"
+	exclude round_decimals
+	exclude "screen*"
+	exclude "scroll?"
+	exclude "sound_*"
+	exclude start
+	exclude status
+	exclude total_correct
+	exclude total_response_time
+	exclude total_responses
+	exclude width
+	exclude empty_column
+	exclude "correct_consigne_*"
+	exclude "response_consigne_*"
+	exclude response_end_of_experiment
+	exclude "response_time_consigne_*"
+	exclude response_time_end_of_experiment
+	exclude time_Expe
+	exclude time_Init
+	exclude time_Tableau
+	exclude "time_consigne_*"
+	exclude time_end_of_experiment
+	exclude form_response
+	exclude fakeTests
+	exclude idx
+	exclude live_row_experimental_loop
+	exclude opensesame_version
+	exclude practice
+	exclude psychopy_screen
+	exclude test_mode
+	exclude subject_nr
+	exclude subject_parity
+	exclude testCount
+	exclude testLength
+	exclude testRate
+	exclude "time_block_*"
+	exclude time_experimental_loop
+	exclude time_prepa_trigger
+	exclude time_test_mode
+	exclude correct_keyboard_response
+	exclude response_keyboard_response
+	exclude "correct_fix_*"
+	exclude "time_fix_*"
+	exclude "live_row*"
+	exclude repeat_cycle
+	exclude response_time
+	exclude time_Exe
+	exclude time_Id_participant
+	exclude time_experimental_sequence
+	exclude time_logger
+	exclude time_reset_feedback
+	exclude time_trigger_stop
+	exclude title
+	exclude val
+
+define inline_script prepa_trigger
+	set description "Exécute du code Python"
+	___run__
+	import pyxid2
+	
+	dev = pyxid2.get_xid_devices()[0]
+	dev.set_pulse_duration(50)
+	__end__
+	set _prepare ""
+
+define sketchpad presentation
+	set start_response_interval no
+	set duration 0
+	set description "Displays stimuli"
+	draw textline center=1 color=white font_bold=yes font_family=mono font_italic=no font_size=45 html=yes show_if=True text="[valeur]" x=0 y=0 z_index=0
+
+define reset_feedback reset_feedback
+	set description "Resets the feedback variables, such as 'avg_rt' and 'acc'"
+
+define form_text_input test_mode
+	set timeout infinite
+	set spacing 10
+	set rows "1;1;6"
+	set only_render no
+	set margins "50;50;50;50"
+	set form_var test_mode
+	set form_title test
+	set form_question "Test mode :"
+	set description "A simple text input form"
+	set cols 1
+	set _theme gray
+	widget 0 0 1 1 label text="{form_title}"
+	widget 0 1 1 1 label center=no text="{form_question}"
+	widget 0 2 1 1 text_input focus=yes return_accepts=yes stub="" var="{form_var}"
+
+
+define inline_script trigger
+	set description "Exécute du code Python"
+	___run__
+	if copieTable[count] == 1 :
+	    dev.activate_line(lines = 2)
+	    
+	elif copieTable[count] == 0 :
+	    dev.activate_line(lines = 3)
+	    
+	else : 
+	    print("Erreur de variable de reponse ou codage du tableau")
+	__end__
+	set _prepare ""
+
+define inline_script trigger_rep
+	set description "Exécute du code Python"
+	___run__
+	if correct_response == None :
+	    if response_keyboard_response == "num_0" :
+	        dev.activate_line(lines = 12)
+	    else :
+	        dev.activate_line(lines = 13)
+	
+	elif correct_response == "num_0":
+	    if response_keyboard_response == "num_0" :
+	        dev.activate_line(lines = 14)
+	    else :
+	        dev.activate_line(lines = 15)
+	__end__
+	set _prepare ""
+
+define inline_script trigger_stop
+	set description "Exécute du code Python"
+	___run__
+	del dev
+	 
+	__end__
+	set _prepare ""
+

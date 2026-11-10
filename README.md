@@ -17,6 +17,7 @@ Les métriques d'exposition aux polluants (concentrations moyennes, centiles et 
 
 | Dossier | Contenu | Manuscrit |
 |---|---|---|
+| `00_taches/` | Scripts OpenSesame des tâches cognitives (1-back, 2-back, ANT-I), dans leur version de chaque campagne (`campagne_automne_2024/`, `campagne_printemps_2025/`), à ouvrir avec OpenSesame 4 | 3.5 |
 | `01_pretraitement_EEG/` | Pipelines EEGLAB de l'ANT-I et du N-back (`Pipeline_ANT_final.m`, `Pipeline_NBack.m`), extraction des potentiels évoqués par régions d'intérêt (`extract_erp_*.m`) | 3.7 |
 | `02_comportement/` | Indicateurs comportementaux du N-back (TR, d′) et des réseaux de l'ANT-I (`pre_traitement_all.py`), mise en forme (`mise_en_F.py`) | 3.5 |
 | `03_trajets_bruit/` | Fusion des capteurs portables par campagne (`fusion_capteurs_automne_2024/`, `fusion_capteurs_printemps_2025/`) et descripteurs du bruit (LAeq, L10, L50, L90) | 3.4.5 à 3.4.7, 4.1.2 |
@@ -48,7 +49,7 @@ python 07_modeles\LMM_intention.py
 ## Environnement logiciel
 
 - **Python** 3.11 ou plus récent. Dépendances dans `requirements.txt` (versions avec lesquelles les scripts ont été vérifiés). Les modèles mixtes sont ajustés avec `statsmodels` (`mixedlm`), la correction de Benjamini–Hochberg avec `statsmodels.stats.multitest`.
-- **MATLAB** R2025b avec **EEGLAB** 2026.0.0 et les extensions *clean_rawdata* (ASR), *ICLabel* et *BIOSIG* (import des fichiers .bdf). Le traitement parallèle utilise la *Parallel Computing Toolbox*.
+- **MATLAB** R2025b avec **EEGLAB** 2025.1 et les extensions *clean_rawdata* (ASR), *ICLabel* et *BIOSIG* (import des fichiers .bdf). Le traitement parallèle utilise la *Parallel Computing Toolbox*.
 
 ## Citation
 
